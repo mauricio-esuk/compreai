@@ -221,7 +221,7 @@ class PostgresProdutoDao extends PostgresDao implements ProdutosDao {
         $stmt = $this->conn->prepare($query_produto);
 
         $stmt->bindValue(":descricao", $_POST['descricao'] );
-        $stmt->bindValue(":modelo", $_POST['descricao'] );
+        $stmt->bindValue(":modelo", $_POST['modelo'] );
         $stmt->bindValue(":preco_custo", $_POST['preco_custo'] );
         $stmt->bindValue(":preco_venda", $_POST['preco_venda'] );
         $stmt->bindValue(":cd_barras", $_POST['preco_venda'] );
@@ -282,8 +282,6 @@ class PostgresProdutoDao extends PostgresDao implements ProdutosDao {
             $imagens_novas = $_FILES['img_detalhes']['name'];
 
         }
-
-        
 
         if(count($imagens_cmb) > 0){
 

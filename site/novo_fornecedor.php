@@ -105,7 +105,7 @@
                                                     <select class="form-select" name = "provedor" >
 
                                                         <option value="@Provedor" selected>@Provedor</option>
-                                                        <option value = "@gmail" >@gmail.com</option>
+                                                        <option value = "@gmail.com" >@gmail.com</option>
                                                         <option value = "@outlook.com.br" >@outlook.com.br</option>
                                                         <option value = "@outlook.com" >@outlook.com</option>
                                                         <option value = "@yahoo.com.br" >@yahoo.com.br</option>
@@ -132,7 +132,7 @@
 
                                                 <div class="form-group col-md-2">
 
-                                                    <input type="text" class="form-control" name = "ie" placeholder="Inscrição Estadual"  maxlength="14" required>
+                                                    <input type="text" class="form-control" name = "ie" placeholder="Inscrição Estadual"  maxlength="11" required>
 
                                                 </div>
 
@@ -168,7 +168,7 @@
 
                                                         <?php 
 
-                                                            echo $dao->insere(null);
+                                                            echo $dao->insere();
                                                         
                                                         ?>
 

@@ -6,22 +6,42 @@ include_once('validacoes/FornecedoresForm.php');
 
 class PostgresFornecedorDao extends PostgresDao implements FornecedorDao {
 
-    private $table_name = 'CA_FORNECEDOR';
+    private $table_name = 'ca_fornecedor';
 
-    public function insere($fornecedor) {
+    public function insere() {
 
-        $msg = "";
+        if(isset($_POST['envd'])  && FornecedoresForm::validar() == "ok"){
 
-        $id = 0;
+            $query = "INSERT INTO " . $this->table_name . 
+            " (fo_social, fo_fantasia, fo_cnpj, fo_ie, fo_telefone, fo_email) VALUES" .
+            " (?, ?, ?, ?, ?, ?)";
 
-        if(isset($_POST['envd'])  && FornecedoresForm::validar($_POST['social'], $_POST['email']) == "ok"){
+            $stmt = $this->conn->prepare($query);
 
+            $values = array(
 
-            return "sucesso";
+                $_POST['social'], 
+                $_POST['fantasia'],
+                $_POST['cnpj'],
+                $_POST['ie'],
+                $_POST['telefone'],
+                $_POST['email'] . $_POST['provedor']
+
+            );
+
+            if($stmt->execute($values)){
+
+                return "Fornecedor cadastrado com sucesso";
+
+            }else{
+
+                return "Não foi possível cadastrar o usuário. Ocorreu um erro !";
+
+            }
 
         } else if(isset($_POST['envd'])){
 
-            return FornecedoresForm::validar($_POST['social'] , $_POST['email']);
+            return FornecedoresForm::validar();
 
         }
 
