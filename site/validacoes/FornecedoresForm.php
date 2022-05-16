@@ -2,20 +2,20 @@
 
  class FornecedoresForm{
 
-    public static function validar(){
+    public static function validar($fornecedor){
         
-        $campo = ltrim($_POST['social'], " ");
+        $campo = ltrim($fornecedor->getSocial(), " ");
 
         $name_spaces = substr_count($campo, " ");
 
-        $fantasia = ltrim($_POST['fantasia'], " ");
+        $fantasia = ltrim($fornecedor->getFantasia(), " ");
 
         $fantasia_spaces = substr_count($fantasia, " ");
 
 
-        $email_numbers = preg_match_all( "/[0-9]/", $_POST['email'] );
+        $email_numbers = preg_match_all( "/[0-9]/", $fornecedor->getEmail() );
 
-        $email_dots = substr_count( $_POST['email'], ".");
+        $email_dots = substr_count( $fornecedor->getEmail(), ".");
 
 
         if(!preg_match("/^[a-zA-Z  ]+$/", $campo) || $name_spaces > 4 || strlen($campo) < 6){
@@ -26,20 +26,20 @@
 
             return "Erro: O nome fantasia informado está incorreta.\n";
 
-        } else if(strlen($_POST['cnpj']) != 14 || !ctype_digit($_POST['cnpj'])){
+        } else if(strlen($fornecedor->getCNPJ()) != 14 || !ctype_digit($fornecedor->getCNPJ())){
 
             return "Erro: O cnpj informado está incorreto.\n";
 
-        } else if(strlen($_POST['ie']) != 11 || !ctype_digit($_POST['ie'])){
+        } else if(strlen($fornecedor->getIE()) != 11 || !ctype_digit($fornecedor->getIE())){
 
             return "Erro: A inscrição estadual (IE) está incorreta.\n";
 
-        } else if(strlen($_POST['telefone']) < 10 || !ctype_digit($_POST['telefone'])){
+        } else if(strlen($fornecedor->getTelefone()) < 10 || !ctype_digit($fornecedor->getTelefone())){
 
             return "Erro: O telefone informado está incorreto :::.\n";
 
-        } else if(!preg_match("/^[a-zA-Z0-9.]+$/", $_POST['email']) || $email_numbers > 4 || $email_dots > 1 || 
-                strlen($_POST['email']) < 7 || $_POST['provedor'] == "@Provedor"){
+        } else if(!preg_match("/^[a-zA-Z0-9.]+$/", $fornecedor->getEmail()) || $email_numbers > 4 || $email_dots > 1 || 
+                strlen($fornecedor->getEmail()) < 7 || $fornecedor->getProvedor() == "@Provedor"){
 
             return "Erro: O email informado está incorreto" . $email_numbers . ".\n";
 

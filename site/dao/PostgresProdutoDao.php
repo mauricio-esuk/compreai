@@ -53,7 +53,7 @@ class PostgresProdutoDao extends PostgresDao implements ProdutosDao {
 
                 $msg = $msg . "Erro: O campo Modelo foi preenchido incorretamente" . $msg;
 
-            } else if($_POST['preco_custo'] == 0 || $_POST['preco_venda'] == 0){
+            } else if($_POST['preco_custo'] == 0 || $_POST['preco_venda'] == 0 || strlen($_POST['preco_custo']) > 5){
 
                 $msg = $msg . "Erro: O preço mínimo é R$ 1,00" . $msg;
                 

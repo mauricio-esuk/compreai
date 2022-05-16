@@ -22,7 +22,7 @@
 
                         <div class = "center-flx border border-dark justify-content-start " > 
 
-                            <b class = "ms-3" > CADASTROS </b> 
+                            <b class = "ms-3" > GERENCIAR </b> 
 
                         </div>
 
@@ -62,9 +62,9 @@
 
                                 <div class="modal-content rounded-5 shadow">
 
-                                    <div class="modal-header p-6 pb-3 border-bottom-0">
+                                    <div class="modal-header p-6 pb-4 border-bottom-0">
 
-                                        <h4 class="fw-bold mb-0">CADASTRO - FORNECEDORES</h4>
+                                        <h4 class="fw-bold mb-0">Cadastro Fornecedores</h4>
 
                                     </div>
 
@@ -168,7 +168,7 @@
 
                                                         <?php 
 
-                                                            echo $dao->insere();
+                                                            echo $dao->insere(null);
                                                         
                                                         ?>
 

@@ -8,9 +8,21 @@ class PostgresFornecedorDao extends PostgresDao implements FornecedorDao {
 
     private $table_name = 'ca_fornecedor';
 
-    public function insere() {
+    public function insere($fornecedor) {
 
-        if(isset($_POST['envd'])  && FornecedoresForm::validar() == "ok"){
+        if(isset($_POST['envd'])){
+
+            //opcional
+
+            $fornecedor = new Fornecedor(
+
+                $_POST['social'], $_POST['fantasia'],  
+                $_POST['cnpj'], $_POST['ie'],
+                $_POST['telefone'], $_POST['email']
+
+            );
+
+            $fornecedor->setProvedor($_POST['provedor']);
 
             $query = "INSERT INTO " . $this->table_name . 
             " (fo_social, fo_fantasia, fo_cnpj, fo_ie, fo_telefone, fo_email) VALUES" .
@@ -29,44 +41,13 @@ class PostgresFornecedorDao extends PostgresDao implements FornecedorDao {
 
             );
 
-            if($stmt->execute($values)){
+            if(FornecedoresForm::validar($fornecedor) == "ok"  && $stmt->execute($values)){
 
                 return "Fornecedor cadastrado com sucesso";
 
             }else{
 
-                return "Não foi possível cadastrar o usuário. Ocorreu um erro !";
-
-            }
-
-        } else if(isset($_POST['envd'])){
-
-            return FornecedoresForm::validar();
-
-        }
-
-    }
-
-    public function inserirFotos($qtd_fotos, $categoria_foto, $id, $categoria, $fotos){
-        $erro = "";
-
-        if( $qtd_fotos > 0) {
-
-            for($i = 0; $i < $qtd_fotos; $i++){
-				
-				$path = 'imagens/' . $categoria . '/' . $id . '/' . $categoria_foto . '/' . $fotos[$i];
-
-                $query_fotos = "INSERT INTO CA_IMAGENS" . 
-                " (caminho, categoria, id_produto) VALUES" .
-                " (:caminho, :categoria, :id_produto)";
-
-                $stmt = $this->conn->prepare($query_fotos);
-
-                $stmt->bindValue(":caminho", $path);
-                $stmt->bindValue(":categoria", $categoria_foto);
-                $stmt->bindValue(":id_produto", $id);
-
-                $stmt->execute();
+                return FornecedoresForm::validar($fornecedor);
 
             }
 
@@ -147,87 +128,7 @@ class PostgresFornecedorDao extends PostgresDao implements FornecedorDao {
 
         }
 
-        $path_vitrine = "imagens/" . $subcategoria->getNome() . "/" . $produto->getId() . "/Vitrine/";
-        $path_detalhe = "imagens/" . $subcategoria->getNome() . "/" . $produto->getId() . "/Detalhes/";
-
-
-        $msg =  $msg . $this->alteraFoto(
-
-            $produto->getImgsVitrine(), $path_vitrine
-
-        );
-
-        $msg =  $msg . $this->alteraFoto(
-
-            $produto->getImgsDetalhes(), $path_detalhe
-
-        );
-
         return $msg;
-
-    }
-
-    public function alteraFoto($imagens_prod, $path){
-
-        $erro = "";
-
-        $imagens_cmb = array();
-        $imagens_novas = array();
-
-        if(isset($_POST['img_vitrine_cmb']) && count($_FILES['img_produtos']['name']) > 0 && $imagens_prod[0]->getCategoria() == "Vitrine"){
-
-            $imagens_cmb = $_POST['img_vitrine_cmb'];
-
-            $imagens_novas = $_FILES['img_produtos']['name'];
-            
-        } else if(isset($_POST['img_detalhes_cmb']) && count($_FILES['img_detalhes']['name']) > 0 && $imagens_prod[0]->getCategoria() == "Detalhes"){
-
-            $imagens_cmb = $_POST['img_detalhes_cmb'];
-
-            $imagens_novas = $_FILES['img_detalhes']['name'];
-
-        }
-
-        
-
-        if(count($imagens_cmb) > 0){
-
-            for($i = 0; $i < count($imagens_cmb); $i++){
-
-                $caminho = "";
-                $id_img = "";
-    
-                $query_img = 
-                "UPDATE ca_imagens SET caminho = :caminho ".
-                "WHERE id = :id";
-    
-                $stmt = $this->conn->prepare($query_img);
-
-                for($j = 0; $j < count($imagens_prod); $j++){
-
-                    if($imagens_cmb[$i] == $imagens_prod[$j]->getId() ){
-
-                        $id_img = $imagens_prod[$j]->getId();
-                        $caminho = $path . $imagens_novas[$i];
-
-                    }
-
-                }
-    
-                $stmt->bindValue(":id", $id_img );
-                $stmt->bindValue(":caminho", $caminho );
-    
-                if(!$stmt->execute()){
-    
-                    $erro = ". Ocorreu um erro ao tentar alterar a foto do produto !";
-        
-                } 
-        
-            }
-
-        }
-
-        return $erro;
 
     }
 
@@ -291,47 +192,9 @@ class PostgresFornecedorDao extends PostgresDao implements FornecedorDao {
             $produto->setCores($cores);
 
         }
-
-        $produto->setImgsVitrine($this->buscaImagensProduto($produto->getId(), "Vitrine"));
-        $produto->setImgsDetalhes($this->buscaImagensProduto($produto->getId(), "Detalhes"));
         
      
         return $produto;
-    }
-
-    /* Select para exibir a relação das imagens que o produto possui */
-
-    public function buscaImagensProduto($id, $categoria_img){
-
-        $imgs = array();
-
-        $query_img = 
-        "SELECT img.id, img.caminho, img.categoria, img.id_produto 
-            FROM ca_imagens img 
-        WHERE img.id_produto = ? AND img.categoria = ?";
-
-        $stmt = $this->conn->prepare( $query_img );
-        $stmt->bindValue(1, $id);
-        $stmt->bindValue(2, $categoria_img);
-        $stmt->execute();
-
-        if($stmt){
-
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-
-                $path = explode("/", $row['caminho']);
-
-                $img = new Imagem($row['id'], end($path), $categoria_img);
-                
-                $imgs[] = $img;
-
-                
-            }
-
-        }
-
-        return $imgs;
-
     }
 
     public function buscaPorNome($nome) {
@@ -361,16 +224,10 @@ class PostgresFornecedorDao extends PostgresDao implements FornecedorDao {
 
     public function buscaTodos() {
 
-        $query = 
-        "SELECT pro.id, pro.descricao, pro.modelo, pro.preco_custo, pro.preco_venda,
-                pro.cd_barras, pro.cd_referencia, pro.unidade, pro.ncm,
-                sub.nome subcategoria, mar.nome marca
-            FROM " . $this->table_name . " pro 
-            INNER JOIN ca_marcas mar 
-                ON mar.id = pro.id_marca 
-            INNER JOIN ca_subcategorias sub 
-                ON sub.id = pro.id_subcategoria 
-        ORDER BY pro.id ASC";
+        $query=
+        "SELECT id, fo_social, fo_fantasia, fo_cnpj, fo_ie, fo_telefone, fo_email
+            FROM " . $this->table_name . "
+        ORDER BY fo_social ASC";
      
         $stmt = $this->conn->prepare( $query );
         $stmt->execute();
