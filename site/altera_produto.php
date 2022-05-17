@@ -424,7 +424,40 @@
                                             
                                             </div>
 
-                                            <a href='novo_produto.php' class='btn btn btn-success left-margin mt-3'> Novo </a>
+                                            <div class = "row border border-dark ">
+
+                                                <div class = "col-12 col-md-12 col-lg-12 col-xl-12 mt-3 text-danger">
+
+                                                    <span class="h-100" name = "msg">
+
+                                                        <?php 
+
+                                                            if(isset($_POST['enviar'])){
+
+                                                                echo $dao->altera($produto, $factory);
+
+                                                            }
+                                                        ?>
+
+                                                    </span>
+
+                                                </div>
+                                            
+                                            </div>
+
+                                            <div class = "row border border-dark ">
+
+                                                <div class = "col-12 col-md-5 col-lg-4 col-xl-3 text-danger h-100">
+
+                                                    <button name = "enviar"  type="submit" class="btn btn-sm btn-success w-100 mt-2 mb-2"> 
+
+                                                        Alterar 
+
+                                                    </button>
+
+                                                </div>
+
+                                            </div>
                                     
                                         </section>
 
