@@ -84,7 +84,7 @@
                                 
                                     </div>
                             
-                                    <form class="p-4 p-md-2 border rounded bg-light cadastro-conta-x content-area">
+                                    <form class="p-4 p-md-2 border rounded bg-light cadastro-conta-x content-area" method = "post" >
                                 
                                         <section>
 
@@ -94,7 +94,7 @@
 
                                                     <input type="number" name = "cd_barras" placeholder="Código de Barras"
                                                            class="form-control" value = "<?= $produto->getCdBarras(); ?>" 
-                                                        title = "Código de Barras" required 
+                                                        title = "Código de Barras"  required 
                                                     >
 
                                                 </div>
@@ -260,7 +260,7 @@
 
                                                 <div class = "col-12 col-md-5 col-lg-4 col-xl-3 mt-3 text-danger"> 
 
-                                                    <select class="form-select h-75 " name = "cor" title = "Cor"  multiple>
+                                                    <select class="form-select h-75 " name = "cor[]" title = "Cor"  multiple>
 
                                                         <option disabled="disabled" >Cor</option>
 
@@ -276,7 +276,7 @@
 
                                                                 for($i = 0; $i < count ($produto->getCores()); $i++){
 
-                                                                    $cor = $produto->getCores()[$i];
+                                                                    $cor = $produto->getCores()[$i]->getNome();
 
                                                                     if($nome == $cor){
 
@@ -482,8 +482,3 @@
     </div><?php include 'footer.php'; ?>
 
 </div>
-
-
-
-
-
