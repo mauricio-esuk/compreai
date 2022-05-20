@@ -188,7 +188,13 @@ class PostgresProdutoDao extends PostgresDao implements ProdutosDao {
 
     public function altera($produto, $factory) {
 
-        $msg = "";
+        $msg = "Ocorreu um erro ao tentar alterar o produto !";
+		$error_cor = false;
+		
+		$cores_escolhidas = array();
+		$cores_escolhidas = $_POST['cor'];
+		
+		$index_cor_cmb = 0;
 
         $daoSubcategoria = $factory->getSubcategoriaDao();
         $daoMarca = $factory->getMarcaDao();
@@ -231,16 +237,37 @@ class PostgresProdutoDao extends PostgresDao implements ProdutosDao {
         $stmt->bindValue(':id_marca', $marca->getId() );
         $stmt->bindValue(':id_subcategoria', $subcategoria->getId());
         $stmt->bindValue(':id', $produto->getId() );
+		
+		if($stmt->execute()){
 
-        if($stmt->execute()){
+			$msg = "Produto alterado com sucesso!:::" . (count($cores_escolhidas));
 
-            $msg = "Produto alterado com sucesso !";
+		}
+		
+		for($i = 0; $i < count($produto->getCores()); $i++) {
+			
+			$id_rel = $produto->getCores()[$i]->getIdRelProduto() ;
+			
+			$query_cor_produto = "UPDATE rel_produto_cor SET " .
+				"id_produto = :id_produto, id_cor = :id_cor " . 
+			" WHERE id =:id";
+			
+			$stmt_cor = $this->conn->prepare($query_cor_produto);
+		
+			$stmt_cor->bindValue(":id_produto", $produto->getId());
+			$stmt_cor->bindValue(":id_cor", $cores_escolhidas[$index_cor_cmb]);
+			$stmt_cor->bindValue(":id", $id_rel);
+			
+			if(!$stmt_cor->execute() && !$error_cor) {
 
-        } else {
+				$error_cor = true;
+				$msg = " Erro relacionado a cor do produto !\n";
 
-            $msg = "Ocorreu um erro ao tentar alterar o produto !";
-
-        }
+			}
+			
+			$index_cor_cmb++;
+			
+		}
 
         $path_vitrine = "imagens/" . $subcategoria->getNome() . "/" . $produto->getId() . "/Vitrine/";
         $path_detalhe = "imagens/" . $subcategoria->getNome() . "/" . $produto->getId() . "/Detalhes/";
@@ -325,6 +352,8 @@ class PostgresProdutoDao extends PostgresDao implements ProdutosDao {
     }
 
     public function buscaPorId($id) {
+		
+		$produto = null;
         
         $cores = array();
         
@@ -363,7 +392,7 @@ class PostgresProdutoDao extends PostgresDao implements ProdutosDao {
         /* Select para exibir a relação das cores que o produto possui */
 
         $query_cor = 
-        "SELECT rel_cor.id, ccor.nome cor, ccor.cd_hex hex 
+        "SELECT rel_cor.id id_rel, ccor.id, ccor.nome cor, ccor.cd_hex hex 
             FROM rel_produto_cor rel_cor 
             INNER JOIN ca_cores ccor 
                 ON ccor.id = rel_cor.id_cor 
@@ -376,12 +405,16 @@ class PostgresProdutoDao extends PostgresDao implements ProdutosDao {
         if($stmt2){
 
             while ($row2 = $stmt2->fetch(PDO::FETCH_ASSOC)){
+				
+				$cor = new Cor($row2['id'], $row2['cor'], $row2['hex']);
+				$cor->setIdRelProduto($row2['id_rel']);
 
-                $cores[] = $row2['cor'];
+                $cores[] = $cor;
 
             }
 
             $produto->setCores($cores);
+			
 
         }
 
