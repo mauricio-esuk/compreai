@@ -17,7 +17,7 @@
 
  ?>
 
-<div id = "detalhes_produto" class = "row d-flex justify-content-center border border-dark h-100" > <!-- bg-secondary -->
+<div id = "detalhes_produto" class = "row d-flex justify-content-center border border-dark" > <!-- bg-secondary -->
 
     <div id = "fotos-categorias" class = "row mt-2 w-75 me-5 ms-3" >
 
@@ -64,49 +64,64 @@
 
                 </div>
     
-                <div id = "menu-fotos-conta" class = "col-xl-10 border border-dark mt-3 ms-3 me-3" ><!-- bg-secondary -->
-
-                    <!-- Fim Mauricio -->
+                <div id = "menu-fotos-conta" class = "col-xl-10 border border-dark mt-3 ms-3 me-3" >
             
-                    <div id = "foto" class = "row ms-1 me-1 mt-3">
-                        
-                        <!-- Inicio Rodrigo -->
+                    <div id = "foto" class = "row  mt-1 ">
 
-                        <div class="container py-3">
-
-                            <div class="" role="document">
+                        <div class="container py-3 ">
+	
+                            <div class="bg-primary" role="document">
 
                                 <div class="modal-content rounded-5 shadow">
 
-                                    <div class="modal-header p-6 pb-3 border-bottom-0">
-
-                                        <h4 class="fw-bold mb-0">Cadas Produtos</h4>
-
+                                    <div class="modal-header p-6 pb-1 ">
+                                
+                                        <h4 class="fw-bold mb-0">Cadastro de Produtos</h4>
+                                
                                     </div>
+                            
+                                    <form class="p-4 p-md-2 border rounded bg-light cadastro-conta-x content-area" method = "post" enctype="multipart/form-data">
+                                
+                                        <section>
 
-                                    <form class="p-4 p-md-2 border rounded bg-light cadastro-conta-x " method = "post" enctype="multipart/form-data" >
+                                            <div class = "row border border-dark ">
 
-                                        <div class="form-floating cadastro-conta-h mb-4">
+                                                <div class = "col-12 col-md-5 col-lg-4 col-xl-3 mt-1"> 
 
-                                            <div class="row">
-
-                                                <div class="form-group col-md-2">
-
-                                                    <input type="number" class="form-control" name = "cd_barras" placeholder="Código Barras" required>
-
-                                                </div>
-
-                                                <div class="form-group col-md-2">
-
-                                                    <input type="number" class="form-control" name = "cd_referencia" placeholder="Código Referencia" required>
+                                                    <input type="number" name = "cd_barras" placeholder="Cód Barras"
+                                                           class="form-control" title = "Código de Barras" maxlength = "13"
+														required 
+                                                    >
 
                                                 </div>
 
-                                                <div class="form-group col-md-2">
+                                                <div class = "col-12 col-md-4 col-lg-4 col-xl-3 mt-1 text-warning" >
+                                                    
+                                                    <input type="number" name = "cd_referencia" placeholder="Cod Referência"
+                                                           class="form-control" title = "Código de Refêrencia" maxlength = "13"
+														required 
+                                                    >
 
-                                                    <select class="form-select" name = "subcategoria" >
+                                                </div>
 
-                                                        <option selected="true" disabled="disabled" >Categoria</option>
+                                                <div class = "col-12 col-md-3 col-lg-4 col-xl-3 mt-1"> 
+
+                                                    <input type="text" name = "ncm" placeholder="Cod NCM"
+                                                           class="form-control" title = "Código NCM" maxlength="8" 
+														required 
+                                                    >
+
+                                                </div>
+
+                                            </div>
+
+                                            <div class = "row border border-dark ">
+
+                                                <div class = "col-12 col-md-5 col-lg-4 col-xl-3 mt-1 text-danger"> 
+
+                                                    <select class="form-select" name = "subcategoria" title = "Subcategoria" >
+
+                                                        <option selected='true' disabled='disabled' >Subcategoria</option>
 
                                                         <?php 
 
@@ -115,8 +130,8 @@
                                                             while ($row = $subcategorias->fetch(PDO::FETCH_ASSOC)){
 
                                                                 extract($row);
-
-                                                                echo "<option value = '{$id}' >{$nome}</option>";
+																
+																echo "<option value = '{$id}' >{$nome}</option>";
 
                                                                 $arr_categorias[] = new Subcategoria($id, $nome);
 
@@ -129,9 +144,9 @@
 
                                                 </div>
 
-                                                <div class="form-group col-md-2">
+                                                <div class = "col-12 col-md-4 col-lg-4 col-xl-3 mt-1 text-danger"> 
 
-                                                    <select class="form-select" name = "marca" >
+                                                    <select class="form-select" name = "marca" title = "Marca" >
 
                                                         <option selected="true" disabled="disabled" >Marca</option>
 
@@ -151,78 +166,25 @@
                                                         ?>
 
                                                     </select>
-
-                                                </div>
                                                 
-                                            </div>
-
-                                        </div>
-
-                                        <div class="form-floating mb-3 cadastro-conta-h">
-
-                                            <div class="row">
-
-                                                <div class="form-group col-md-8">
-
-                                                    <input type="text" class="form-control" name = "descricao" placeholder="Descricao">
-
                                                 </div>
 
-                                            </div>
+                                                <div class = "col-12 col-md-3 col-lg-4 col-xl-3 mt-1 text-danger"> 
 
-                                        </div>
+                                                    <select class="form-select" name = "unidade" title = "Unidade" >
 
-                                        <div class="form-floating mt-2 mb-3 cadastro-conta-h">
-
-                                            <div class="row mt-4 ">
-
-                                                <div class="form-group col-md-2">
-
-                                                    <input type="number" class="form-control" name = "preco_custo" placeholder="Preço Custo" required>
-
-                                                </div>
-
-                                                <div class="form-group col-md-2">
-
-                                                    <input type="number" class="form-control" name = "preco_venda" placeholder="Preço Venda" required>
-
-                                                </div>
-
-                                                <div class="form-group col-md-2">
-
-                                                    <select class="form-control" name = "unidade">
-
-                                                        <option selected value = "UN" >UN</option>
-
-                                                        <option value = "PC" >PC</option>
-
-                                                        <option value = "MT" >MT</option>
-
-                                                        <option value = "KG" >KG</option>
-
-                                                    </select>
-
-                                                </div>
-
-                                                <div class="form-group col-md-2">
-
-                                                    <select class="form-select h-75" name = "cor" multiple>
-
-                                                        <option disabled="disabled" >Selecione a Cor</option>
+                                                        <option selected='true' disabled='disabled' >Unidade</option>
 
                                                         <?php 
 
-                                                        if($cores){ 
+                                                        $arr_unidades = array("UN", "PC", "MT", "KG");
 
-                                                            while ($row = $cores->fetch(PDO::FETCH_ASSOC)){
+                                                        for($i = 0; $i < count($arr_unidades); $i++){
 
-                                                                extract($row);
+                                                            echo "<option value = '{$arr_unidades[$i]}' >{$arr_unidades[$i]}</option>";
 
-                                                                echo "<option value = '{$id}' >{$nome}</option>";
-
-                                                            }
                                                         }
-                                                        
+
                                                         ?>
 
                                                     </select>
@@ -231,81 +193,113 @@
 
                                             </div>
 
-                                        </div>
+                                            <div class = "row border border-dark ">
 
-                                        <div class="form-floating mb-3 mt-2  cadastro-conta-h">
+                                                <div class = "col-12 col-md-5 col-lg-4 col-xl-3 mt-1"> 
 
-                                            <div class="row mt-4">
-
-                                                <div class="form-group col-md-4">
-
-                                                    <input type = "text" class = "form-control" name = "modelo" placeholder = "Modelo" maxlength="10"
+                                                    <input type="text" name = "modelo" placeholder="Modelo"
+                                                           class="form-control" title = "Modelo" maxlength="16" 
+														required 
                                                     >
 
                                                 </div>
 
-                                                <div class="form-group col-md-2">
+                                                <div class = "col-12 col-md-4 col-lg-4 col-xl-3 mt-1"> 
 
-                                                    <input type = "text" class = "form-control" name = "ncm" placeholder = "NCM" required
+                                                    <input type="number" name = "preco_venda" placeholder="Preço Venda"
+                                                            class="form-control" title = "Preço de Venda" 
+														required 
                                                     >
 
                                                 </div>
 
-                                                <!--
+                                                <div class = "col-12 col-md-3 col-lg-4 col-xl-3 mt-1"> 
 
-                                                <div class="form-group col-md-2">
-
-                                                    <input type="text" class="form-control" id="idEstoqueProduto" placeholder="Estoque">
+                                                    <input type="number" name = "preco_custo" placeholder="Custo"
+                                                            class="form-control" title = "Preço de Custo" 
+														required 
+                                                    >
 
                                                 </div>
-
-                                                -->
 
                                             </div>
 
-                                        </div>
+                                            <div class = "row border border-dark ">
 
-                                        <div class="form-floating mb-3 mt-2 cadastro-conta-h">
+                                                <div class = "col-12 col-md-5 col-lg-4 col-xl-3 mt-3 text-danger"> 
 
-                                            <div class="row mt-4">
+                                                    <select class="form-select h-75 " name = "cor[]" title = "Cor"  multiple>
 
-                                                <div class="form-group col-md-2">
+                                                        <option disabled="disabled" >Cor</option>
 
-                                                    <div class='upload-wrapper me-3'>
+                                                        <?php
+														
+															if($cores){ 
+
+																while ($row = $cores->fetch(PDO::FETCH_ASSOC)){
+
+																	extract($row);
+																	
+																	echo "<option value = '{$id}' >{$nome}</option>";
+
+																}
+															}
+                                                        
+                                                        ?>
+
+                                                    </select>
+                                                
+                                                </div>
+
+                                                <div class = "col-12 col-md-7 col-lg-8 col-xl-6 mt-3"> 
+
+                                                    <textarea name = "descricao" placeholder="Descrição" 
+                                                            class="form-control text-left  h-75 " rows="3"
+                                                        title = "Descrição" maxlength="400" required
+                                                    ></textarea>
+
+                                                </div>
+
+                                            </div>
+
+                                            <div class = "row border border-dark ">
+                                                
+                                                <div class = "col-12 col-md-4 col-lg-3 col-xl-2 mt-1 d-flex align-items-center">
+                                                    
+                                                    <div class='upload-wrapper me-3 mb-4 '>
 
                                                         <label for='upload-fotos-produto' class = "">
 
-                                                        Enviar foto
+                                                            Adicionar fotos
 
                                                         </label>
 
-                                                        <input id='upload-fotos-produto' class="form-control" type='file' name = "img_produtos[]" multiple />
+                                                        <input id='upload-fotos-produto' class="form-control" type='file' name = "img_produtos[]" multiple/>
 
                                                     </div>
 
                                                 </div>
 
-                                                <div class="form-group col-md-4 d-flex align-items-center me-5">
-                                                    
-                                                    <div id='nome-foto-produto' class = 'me-5' ></div>
+                                                <div class = "col-12 col-md-8 col-lg-5 col-xl-4 d-flex align-items-center ">
+
+                                                    <div id='nome-foto-produto' class = 'mb-4' >
+
+
+                                                    </div>
 
                                                 </div>
-
+                                            
                                             </div>
 
-                                        </div>
+                                            <div class = "row border border-dark ">
 
-                                        <div class="form-floating mb-3 mt-2 cadastro-conta-h">
+                                                <div class = "col-12 col-md-4 col-lg-3 col-xl-2 mt-1 d-flex align-items-center">
 
-                                            <div class="row mt-4">
-
-                                                <div class="form-group col-md-2">
-
-                                                    <div class='upload-wrapper me-3'>
+                                                    <div class='upload-wrapper me-3 mb-4'>
 
                                                         <label for='upload-fotos-detalhe' class = "">
 
-                                                            Enviar foto
+                                                            Adicionar fotos
 
                                                         </label>
 
@@ -315,55 +309,54 @@
 
                                                 </div>
 
-                                                <div class="form-group col-md-4 d-flex align-items-center me-5">
+                                                <div class = "col-12 col-md-8 col-lg-5 col-xl-4 d-flex align-items-center">
 
-                                                    <div id='nome-foto-detalhe' class = 'me-5' ></div>
+                                                    <div id='nome-foto-detalhe' class = 'mb-4' >
+                                                        
+                                                
+                                                    </div>
 
                                                 </div>
-
-
+                                            
                                             </div>
 
-                                        </div>
+                                            <div class = "row border border-dark ">
 
-                                        <div class="form-floating mb-3 mt-4">
-
-                                            <div class="form-group col-md-8">
-
-                                                <button name = "enviar"  type="submit" class="btn btn btn-sm btn-success w-100 cadastro-conta-h"> Cadastrar </button>
-
-                                            </div>
-
-                                        </div>
-
-                                        <div class="form-floating mb-3 cadastro-conta-h">
-
-                                            <div class="row">
-
-                                                <div class="form-group col-md-12">
+                                                <div class = "col-12 col-md-12 col-lg-12 col-xl-12 mt-3 text-danger">
 
                                                     <span class="h-100" name = "msg">
 
                                                         <?php 
-
-                                                            echo $dao->insere(null, $factory);
-                                                        
+														
+															echo $dao->insere(null, $factory);
                                                         ?>
 
                                                     </span>
 
                                                 </div>
-
+                                            
                                             </div>
 
-                                        </div>
-                                        
-                                        <br> <br>
+                                            <div class = "row border border-dark ">
+
+                                                <div class = "col-12 col-md-5 col-lg-4 col-xl-3 text-danger h-100">
+
+                                                    <button name = "enviar"  type="submit" class="btn btn-sm btn-success w-100 mt-2 mb-2"> 
+
+                                                        Adicionar
+
+                                                    </button>
+
+                                                </div>
+
+                                            </div>
+                                    
+                                        </section>
 
                                     </form>
-
+                                
                                 </div>
-
+                                
                             </div>
 
                         </div>
@@ -378,11 +371,6 @@
         
         </div>
 
-    </div>
+    </div><?php include 'footer.php'; ?>
 
 </div>
-<?php include 'footer.php'; ?>
-
-
-
-
